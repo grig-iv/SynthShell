@@ -1,14 +1,14 @@
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Widgets
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell.Services.SystemTray
 
-import "."
-
 Scope {
+
     PanelWindow {
         id: root
 
@@ -120,6 +120,26 @@ Scope {
                 Layout.fillWidth: true
 
                 Rectangle {
+                    id: flagRect
+                    color: root.colBg
+                    implicitWidth: langText.width + root.modulePaddingX
+                    implicitHeight: root.height
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: powerRect.left
+                    anchors.rightMargin: 6
+                    radius: 4
+
+                    Text {
+                        id: langText
+                        anchors.centerIn: parent
+                        font.family: root.fontFamily
+                        font.pixelSize: root.fontSize + 1
+                        text: NiriService.currKbLayout.includes("US") ? "🇺🇸" : "🇷🇺"
+                    }
+                }
+
+                Rectangle {
+                    id: powerRect
                     color: mouseArea.containsMouse ? root.colDangerBg : root.colBg
                     implicitWidth: root.height
                     implicitHeight: root.height
@@ -131,9 +151,9 @@ Scope {
                         id: powerMenuText
                         color: root.colFg
                         anchors.centerIn: parent
-                        text: "󰐥"
                         font.family: root.fontFamily
                         font.pixelSize: root.fontSize + 1
+                        text: "󰐥"
                     }
 
                     Process {
