@@ -69,23 +69,9 @@ PanelWindow {
         Item {
             Layout.fillWidth: true
 
-            Rectangle {
-                id: flagRect
-                color: Theme.colBg
-                implicitWidth: langText.width + Theme.modulePaddingX
-                implicitHeight: root.height
-                anchors.verticalCenter: parent.verticalCenter
+            KeyboardWidget {
                 anchors.right: powerWidget.left
-                anchors.rightMargin: 6
-                radius: 4
-
-                Text {
-                    id: langText
-                    anchors.centerIn: parent
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSize + 1
-                    text: NiriService.currKbLayout.includes("US") ? "🇺🇸" : "🇷🇺"
-                }
+                implicitHeight: root.height
             }
 
             PowerWidget {
