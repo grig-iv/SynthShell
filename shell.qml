@@ -147,6 +147,12 @@ Scope {
                     anchors.right: parent.right
                     radius: 4
 
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: 200
+                        }
+                    }
+
                     Text {
                         id: powerMenuText
                         color: root.colFg
