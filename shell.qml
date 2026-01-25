@@ -1,178 +1,163 @@
 import Quickshell
-import Quickshell.Wayland
-import Quickshell.Widgets
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls
 import Quickshell.Services.SystemTray
 
-Scope {
+PanelWindow {
+    id: root
 
-    PanelWindow {
-        id: root
+    anchors.top: true
+    anchors.left: true
+    anchors.right: true
+    implicitHeight: 26
+    margins.left: 16
+    margins.right: 16
+    margins.top: 4
+    color: "transparent"
 
-        // Theme
-        property string fontFamily: "JetbrainsMono Nerd Font"
-        property int fontSize: 15
-        property int modulePaddingX: 12
+    RowLayout {
+        id: rootLayout
 
-        property color colBg: "#313244"
-        property color colFg: "#cdd6f4"
-        property color colDangerBg: "#BD1847"
+        anchors.fill: parent
 
-        anchors.top: true
-        anchors.left: true
-        anchors.right: true
-        implicitHeight: 26
-        margins.left: 16
-        margins.right: 16
-        margins.top: 4
-        color: "transparent"
+        Item {
+            Layout.fillWidth: true
 
-        RowLayout {
-            id: rootLayout
+            Rectangle {
+                color: Theme.colBg
+                implicitWidth: trayLayout.width + Theme.modulePaddingX
+                implicitHeight: root.height
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                radius: 4
 
-            anchors.fill: parent
+                Row {
+                    id: trayLayout
+                    spacing: 8
+                    anchors.centerIn: parent
 
-            Item {
-                Layout.fillWidth: true
+                    Repeater {
+                        model: SystemTray.items
 
-                Rectangle {
-                    color: root.colBg
-                    implicitWidth: trayLayout.width + root.modulePaddingX
-                    implicitHeight: root.height
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    radius: 4
+                        delegate: MouseArea {
+                            implicitWidth: 16
+                            implicitHeight: 16
 
-                    Row {
-                        id: trayLayout
-                        spacing: 8
-                        anchors.centerIn: parent
+                            Image {
+                                anchors.fill: parent
+                                source: modelData.icon
+                            }
 
-                        Repeater {
-                            model: SystemTray.items
-
-                            delegate: MouseArea {
-                                implicitWidth: 16
-                                implicitHeight: 16
-
-                                Image {
-                                    anchors.fill: parent
-                                    source: modelData.icon
-                                }
-
-                                onClicked: mouse => {
-                                    if (mouse.button === Qt.LeftButton) {
-                                        modelData.activate();
-                                    } else if (mouse.button === Qt.RightButton) {
-                                        modelData.display(root, 0, 0);
-                                    }
+                            onClicked: mouse => {
+                                if (mouse.button === Qt.LeftButton) {
+                                    modelData.activate();
+                                } else if (mouse.button === Qt.RightButton) {
+                                    modelData.display(root, 0, 0);
                                 }
                             }
                         }
                     }
                 }
             }
+        }
 
-            Rectangle {
-                color: root.colBg
-                implicitWidth: clock.implicitWidth + root.modulePaddingX
-                implicitHeight: root.height
-                radius: 4
+        Rectangle {
+            color: Theme.colBg
+            implicitWidth: clock.implicitWidth + Theme.modulePaddingX
+            implicitHeight: root.height
+            radius: 4
 
-                Text {
-                    id: clock
+            Text {
+                id: clock
 
-                    property bool isShort: true
-                    property string shortFormat: "HH:mm"
-                    property string longFormat: "dddd • MMMM dd • HH:mm"
-                    property string currFormat: isShort ? shortFormat : longFormat
+                property bool isShort: true
+                property string shortFormat: "HH:mm"
+                property string longFormat: "dddd • MMMM dd • HH:mm"
+                property string currFormat: isShort ? shortFormat : longFormat
 
-                    property var now: new Date()
-                    text: Qt.formatDateTime(now, isShort ? shortFormat : longFormat)
+                property var now: new Date()
+                text: Qt.formatDateTime(now, isShort ? shortFormat : longFormat)
 
-                    color: root.colFg
-                    anchors.centerIn: parent
-                    font.family: root.fontFamily
-                    font.pixelSize: root.fontSize
-                    font.bold: isShort
+                color: Theme.colFg
+                anchors.centerIn: parent
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.fontSize
+                font.bold: isShort
 
-                    Timer {
-                        interval: 1000
-                        running: true
-                        repeat: true
-                        onTriggered: clock.now = new Date()
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        clock.isShort = !clock.isShort;
-                        clock.now = new Date();
-                    }
+                Timer {
+                    interval: 1000
+                    running: true
+                    repeat: true
+                    onTriggered: clock.now = new Date()
                 }
             }
 
-            Item {
-                Layout.fillWidth: true
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    clock.isShort = !clock.isShort;
+                    clock.now = new Date();
+                }
+            }
+        }
 
-                Rectangle {
-                    id: flagRect
-                    color: root.colBg
-                    implicitWidth: langText.width + root.modulePaddingX
-                    implicitHeight: root.height
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: powerRect.left
-                    anchors.rightMargin: 6
-                    radius: 4
+        Item {
+            Layout.fillWidth: true
 
-                    Text {
-                        id: langText
-                        anchors.centerIn: parent
-                        font.family: root.fontFamily
-                        font.pixelSize: root.fontSize + 1
-                        text: NiriService.currKbLayout.includes("US") ? "🇺🇸" : "🇷🇺"
+            Rectangle {
+                id: flagRect
+                color: Theme.colBg
+                implicitWidth: langText.width + Theme.modulePaddingX
+                implicitHeight: root.height
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: powerRect.left
+                anchors.rightMargin: 6
+                radius: 4
+
+                Text {
+                    id: langText
+                    anchors.centerIn: parent
+                    font.family: Theme.fontFamily
+                    font.pixelSize: Theme.fontSize + 1
+                    text: NiriService.currKbLayout.includes("US") ? "🇺🇸" : "🇷🇺"
+                }
+            }
+
+            Rectangle {
+                id: powerRect
+                color: mouseArea.containsMouse ? Theme.colDangerBg : Theme.colBg
+                implicitWidth: root.height
+                implicitHeight: root.height
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                radius: 4
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 200
                     }
                 }
 
-                Rectangle {
-                    id: powerRect
-                    color: mouseArea.containsMouse ? root.colDangerBg : root.colBg
-                    implicitWidth: root.height
-                    implicitHeight: root.height
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    radius: 4
+                Text {
+                    id: powerMenuText
+                    color: Theme.colFg
+                    anchors.centerIn: parent
+                    font.family: Theme.fontFamily
+                    font.pixelSize: Theme.fontSize + 1
+                    text: "󰐥"
+                }
 
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: 200
-                        }
-                    }
+                Process {
+                    id: powerMenu
+                    command: ["/home/grig/.config/waybar/scripts/power-menu.sh"]
+                }
 
-                    Text {
-                        id: powerMenuText
-                        color: root.colFg
-                        anchors.centerIn: parent
-                        font.family: root.fontFamily
-                        font.pixelSize: root.fontSize + 1
-                        text: "󰐥"
-                    }
-
-                    Process {
-                        id: powerMenu
-                        command: ["/home/grig/.config/waybar/scripts/power-menu.sh"]
-                    }
-
-                    MouseArea {
-                        id: mouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: powerMenu.running = true
-                    }
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: powerMenu.running = true
                 }
             }
         }
