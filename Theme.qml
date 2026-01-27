@@ -9,5 +9,6 @@ Singleton {
 
     property color colBg: "#313244"
     property color colFg: "#cdd6f4"
+    property color colBgFlash: "#4f5a7a"
     property color colDangerBg: "#BD1847"
 }

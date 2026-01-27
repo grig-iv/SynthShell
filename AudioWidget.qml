@@ -4,12 +4,14 @@ import QtQuick
 import QtQuick.Layouts
 
 Rectangle {
+    id: root
+
     color: Theme.colBg
     implicitWidth: text.implicitWidth + Theme.modulePaddingX + 4
     anchors.verticalCenter: parent.verticalCenter
     radius: 4
 
-    property PwNode node: Pipewire.defaultAudioSink
+    readonly property PwNode node: Pipewire.defaultAudioSink
     PwObjectTracker {
         objects: [node]
     }
@@ -23,7 +25,34 @@ Rectangle {
         color: Theme.colFg
     }
 
+    Connections {
+        target: node.audio
+        function onVolumeChanged() {
+            flashAnim.restart();
+        }
+        function onMutedChanged() {
+            flashAnim.restart();
+        }
+    }
+
+    SequentialAnimation on color {
+        id: flashAnim
+        ColorAnimation {
+            to: Theme.colBgFlash
+            duration: 100
+            easing.type: Easing.OutQuad
+        }
+        ColorAnimation {
+            to: Theme.colBg
+            duration: 300
+            easing.type: Easing.OutQuad
+        }
+    }
+
     function getIcon() {
+        if (node == null)
+            return "";
+
         if (node.name == "alsa_output.pci-0000_c4_00.6.analog-stereo") {
             return node.audio.muted ? "󰓄" : "󰓃";
         }
