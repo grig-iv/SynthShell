@@ -35,8 +35,16 @@ PanelWindow {
             Layout.fillWidth: true
 
             KeyboardWidget {
-                anchors.right: powerWidget.left
                 implicitHeight: root.height
+                anchors.right: audioWidget.left
+                anchors.rightMargin: 6
+            }
+
+            AudioWidget {
+                id: audioWidget
+                implicitHeight: root.height
+                anchors.right: powerWidget.left
+                anchors.rightMargin: 6
             }
 
             PowerWidget {

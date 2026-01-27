@@ -20,6 +20,7 @@ Rectangle {
             delegate: MouseArea {
                 implicitWidth: 16
                 implicitHeight: 16
+                cursorShape: Qt.PointingHandCursor
 
                 Image {
                     anchors.fill: parent

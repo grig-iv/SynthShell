@@ -33,6 +33,7 @@ Rectangle {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
         hoverEnabled: true
         onClicked: powerMenu.running = true
     }

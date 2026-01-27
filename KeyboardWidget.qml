@@ -6,7 +6,6 @@ Rectangle {
     color: Theme.colBg
     implicitWidth: langText.width + Theme.modulePaddingX
     anchors.verticalCenter: parent.verticalCenter
-    anchors.rightMargin: 6
     radius: 4
 
     Text {
