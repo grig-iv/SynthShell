@@ -5,10 +5,7 @@ import Quickshell.Io
 Rectangle {
     id: powerRect
     color: mouseArea.containsMouse ? Theme.colDangerBg : Theme.colBg
-    implicitWidth: implicitHeight
-    anchors.verticalCenter: parent.verticalCenter
-    anchors.right: parent.right
-    radius: 4
+    implicitHeight: implicitWidth
 
     Behavior on color {
         ColorAnimation {
@@ -21,7 +18,7 @@ Rectangle {
         color: Theme.colFg
         anchors.centerIn: parent
         font.family: Theme.fontFamily
-        font.pixelSize: Theme.fontSize + 1
+        font.pixelSize: Theme.fontSize + 3
         text: "󰐥"
     }
 

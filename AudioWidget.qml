@@ -50,10 +50,10 @@ Rectangle {
 
     Connections {
         target: node.audio
-        function onVolumeChanged() {
+        function volumeChanged() {
             flashAnim.restart();
         }
-        function onMutedChanged() {
+        function mutedChanged() {
             flashAnim.restart();
         }
     }

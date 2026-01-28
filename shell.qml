@@ -5,6 +5,55 @@ import QtQuick.Layouts
 
 ShellRoot {
     PanelWindow {
+        id: root
+
+        anchors.left: true
+        anchors.top: true
+        anchors.bottom: true
+
+        implicitWidth: 32
+        color: Theme.colBg
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            TrayWidget {
+                implicitWidth: root.width
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: 8
+            }
+
+            ClockWidget {
+                id: clockWidget
+                implicitWidth: root.width
+                anchors.centerIn: parent
+            }
+
+            Item {
+                Layout.fillHeight: true
+            }
+
+            KeyboardWidget {
+                id: keyboardWidget
+                Layout.alignment: Qt.AlignHCenter
+                Layout.bottomMargin: 8
+            }
+
+            PowerWidget {
+                id: powerWidget
+                implicitWidth: root.width
+            }
+
+            //     AudioWidget {
+            //         id: audioWidget
+            //         implicitWidth: root.width
+            //         anchors.right: powerWidget.left
+            //         anchors.rightMargin: 6
+            //     }
+        }
+    }
+
+    PanelWindow {
         anchors.top: true
         anchors.left: true
         anchors.right: true
@@ -20,57 +69,6 @@ ShellRoot {
         Process {
             id: niriGoTop
             command: ["niri", "msg", "action", "focus-workspace-up"]
-        }
-    }
-
-    PanelWindow {
-        id: root
-
-        anchors.top: true
-        anchors.left: true
-        anchors.right: true
-        margins.left: 20
-        margins.right: 20
-        implicitHeight: 26
-        color: "transparent"
-
-        RowLayout {
-            id: rootLayout
-
-            anchors.fill: parent
-
-            Item {
-                Layout.fillWidth: true
-                TrayWidget {
-                    implicitHeight: root.height
-                }
-            }
-
-            ClockWidget {
-                implicitHeight: root.height
-            }
-
-            Item {
-                Layout.fillWidth: true
-
-                KeyboardWidget {
-                    implicitHeight: root.height
-                    anchors.right: audioWidget.left
-                    anchors.rightMargin: 6
-                }
-
-                AudioWidget {
-                    id: audioWidget
-                    implicitHeight: root.height
-                    anchors.right: powerWidget.left
-                    anchors.rightMargin: 6
-                }
-
-                PowerWidget {
-                    id: powerWidget
-                    implicitHeight: root.height
-                }
-            }
         }
     }
 
