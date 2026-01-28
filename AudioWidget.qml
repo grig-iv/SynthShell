@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
@@ -23,6 +24,28 @@ Rectangle {
         font.family: Theme.fontFamily
         font.pixelSize: Theme.fontSize - 1
         color: Theme.colFg
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onClicked: mouse => {
+            if (mouse.button === Qt.LeftButton) {
+                audioSinkCycle.running = true;
+            } else if (mouse.button === Qt.RightButton) {
+                pavucontrol.running = true;
+            }
+        }
+
+        Process {
+            id: audioSinkCycle
+            command: ["audio-sink-cycle"]
+        }
+
+        Process {
+            id: pavucontrol
+            command: ["pavucontrol"]
+        }
     }
 
     Connections {

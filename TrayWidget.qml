@@ -21,6 +21,7 @@ Rectangle {
                 implicitWidth: 16
                 implicitHeight: 16
                 cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                 Image {
                     anchors.fill: parent
