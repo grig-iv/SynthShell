@@ -23,12 +23,6 @@ ShellRoot {
                 Layout.topMargin: 8
             }
 
-            ClockWidget {
-                id: clockWidget
-                implicitWidth: root.width
-                anchors.centerIn: parent
-            }
-
             Item {
                 Layout.fillHeight: true
             }
@@ -50,6 +44,12 @@ ShellRoot {
             //         anchors.right: powerWidget.left
             //         anchors.rightMargin: 6
             //     }
+        }
+
+        ClockWidget {
+            id: clockWidget
+            implicitWidth: root.width
+            anchors.centerIn: parent
         }
     }
 
