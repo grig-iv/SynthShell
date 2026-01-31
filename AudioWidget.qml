@@ -4,13 +4,10 @@ import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
 
-Rectangle {
+ColumnLayout {
     id: root
 
-    color: Theme.colBg
-    implicitWidth: text.implicitWidth + Theme.modulePaddingX + 4
-    anchors.verticalCenter: parent.verticalCenter
-    radius: 4
+    spacing: 0
 
     readonly property PwNode node: Pipewire.defaultAudioSink
     PwObjectTracker {
@@ -18,16 +15,23 @@ Rectangle {
     }
 
     Text {
-        id: text
-        text: `${getIcon()} ${Math.floor(node.audio.volume * 100)}%`
-        anchors.centerIn: parent
+        text: getIcon()
         font.family: Theme.fontFamily
-        font.pixelSize: Theme.fontSize - 1
-        color: Theme.colFg
+        font.pixelSize: Theme.fontSize + 2
+        color: Theme.colFgAlt
+        Layout.alignment: Qt.AlignHCenter
+        Layout.bottomMargin: - 2
+    }
+
+    Text {
+        text: Math.floor(node.audio.volume * 100)
+        font.family: Theme.fontFamily
+        font.pixelSize: Theme.fontSize - 6
+        color: Theme.colFgAlt
+        Layout.alignment: Qt.AlignHCenter
     }
 
     MouseArea {
-        anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: mouse => {
             if (mouse.button === Qt.LeftButton) {
@@ -48,29 +52,29 @@ Rectangle {
         }
     }
 
-    Connections {
-        target: node.audio
-        function volumeChanged() {
-            flashAnim.restart();
-        }
-        function mutedChanged() {
-            flashAnim.restart();
-        }
-    }
-
-    SequentialAnimation on color {
-        id: flashAnim
-        ColorAnimation {
-            to: Theme.colBgFlash
-            duration: 100
-            easing.type: Easing.OutQuad
-        }
-        ColorAnimation {
-            to: Theme.colBg
-            duration: 300
-            easing.type: Easing.OutQuad
-        }
-    }
+    // Connections {
+    //     target: node.audio
+    //     function volumeChanged() {
+    //         flashAnim.restart();
+    //     }
+    //     function mutedChanged() {
+    //         flashAnim.restart();
+    //     }
+    // }
+    //
+    // SequentialAnimation on color {
+    //     id: flashAnim
+    //     ColorAnimation {
+    //         to: Theme.colBgFlash
+    //         duration: 100
+    //         easing.type: Easing.OutQuad
+    //     }
+    //     ColorAnimation {
+    //         to: Theme.colBg
+    //         duration: 300
+    //         easing.type: Easing.OutQuad
+    //     }
+    // }
 
     function getIcon() {
         if (node == null)

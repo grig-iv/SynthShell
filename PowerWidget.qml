@@ -4,7 +4,7 @@ import Quickshell.Io
 
 Rectangle {
     id: powerRect
-    color: mouseArea.containsMouse ? Theme.colDangerBg : Theme.colBg
+    color: mouseArea.containsMouse ? Theme.colBgDanger : Theme.colBg
     implicitHeight: implicitWidth
 
     Behavior on color {

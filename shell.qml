@@ -11,44 +11,77 @@ ShellRoot {
         anchors.top: true
         anchors.bottom: true
 
-        implicitWidth: 32
+        implicitWidth: 36
         color: Theme.colBg
 
         ColumnLayout {
             anchors.fill: parent
 
-            TrayWidget {
-                implicitWidth: root.width
+            FocusedApp {
+                implicitWidth: parent.width - 8
                 Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: 8
             }
 
             Item {
                 Layout.fillHeight: true
+
+                MouseArea {
+                    anchors.left: parent.left
+                    implicitWidth: 4
+                    implicitHeight: parent.height
+                    onClicked: niriGoLeft.running = true
+                }
+
+                Process {
+                    id: niriGoLeft
+                    command: ["niri", "msg", "action", "focus-column-left"]
+                }
+            }
+
+            Rectangle {
+                implicitWidth: tray.width + 8
+                implicitHeight: tray.implicitHeight + 12
+                Layout.bottomMargin: 8
+                Layout.alignment: Qt.AlignHCenter
+
+                radius: 12
+                color: Theme.colBgAlt
+
+                TrayWidget {
+                    id: tray
+                    anchors.centerIn: parent
+                }
+            }
+
+            Rectangle {
+                implicitWidth: parent.width 
+                implicitHeight: 1
+                Layout.alignment: Qt.AlignHCenter
+                Layout.bottomMargin: 8
+                color: Theme.colSeparator
+            }
+
+            AudioWidget {
+                id: audioWidget
+                implicitWidth: root.width
+                Layout.alignment: Qt.AlignHCenter
+                Layout.bottomMargin: 8
             }
 
             KeyboardWidget {
                 id: keyboardWidget
                 Layout.alignment: Qt.AlignHCenter
-                Layout.bottomMargin: 8
+                Layout.bottomMargin: 2
             }
 
             PowerWidget {
                 id: powerWidget
                 implicitWidth: root.width
             }
-
-            //     AudioWidget {
-            //         id: audioWidget
-            //         implicitWidth: root.width
-            //         anchors.right: powerWidget.left
-            //         anchors.rightMargin: 6
-            //     }
         }
 
         ClockWidget {
             id: clockWidget
-            implicitWidth: root.width
             anchors.centerIn: parent
         }
     }
@@ -88,6 +121,25 @@ ShellRoot {
         Process {
             id: niriGoDown
             command: ["niri", "msg", "action", "focus-workspace-down"]
+        }
+    }
+
+    PanelWindow {
+        anchors.right: true
+        anchors.top: true
+        anchors.bottom: true
+
+        color: "transparent"
+        implicitWidth: 4
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: niriGoRight.running = true
+        }
+
+        Process {
+            id: niriGoRight
+            command: ["niri", "msg", "action", "focus-column-right"]
         }
     }
 }
