@@ -1,16 +1,18 @@
 import Quickshell
-import QtQuick
+import Quickshell.Widgets
 import Quickshell.Services.SystemTray
+import QtQuick
+import QtQuick.Layouts
 
 Rectangle {
-    color: Theme.colBg
-    implicitWidth: trayLayout.width + Theme.modulePaddingX
-    anchors.verticalCenter: parent.verticalCenter
-    anchors.left: parent.left
-    radius: 4
+    id: root
+    radius: 12
+    color: Theme.colBgAlt
 
-    Row {
-        id: trayLayout
+    implicitWidth: tray.width + 12
+
+    RowLayout {
+        id: tray
         spacing: 8
         anchors.centerIn: parent
 
@@ -18,12 +20,13 @@ Rectangle {
             model: SystemTray.items
 
             delegate: MouseArea {
-                implicitWidth: 16
-                implicitHeight: 16
+                implicitWidth: root.height - 4
+                implicitHeight: root.height - 4
+
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-                Image {
+                IconImage {
                     anchors.fill: parent
                     source: modelData.icon
                 }

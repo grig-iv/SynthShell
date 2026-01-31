@@ -1,18 +1,13 @@
 import Quickshell
 import QtQuick
 
-Rectangle {
-    color: Theme.colBg
-    implicitWidth: clockText.implicitWidth + Theme.modulePaddingX
-    radius: 4
-
+Item {
     Text {
         id: clockText
 
         property bool isShort: true
-        property string shortFormat: "HH:mm"
-        property string longFormat: "dddd • MMMM dd • HH:mm:ss"
-        property string currFormat: isShort ? shortFormat : longFormat
+        readonly property string shortFormat: "HH:mm"
+        readonly property string longFormat: "dddd • MMMM dd • HH:mm:ss"
 
         text: Qt.formatDateTime(clock.date, isShort ? shortFormat : longFormat)
 
@@ -21,6 +16,20 @@ Rectangle {
         font.family: Theme.fontFamily
         font.pixelSize: Theme.fontSize
         font.bold: isShort
+
+        SequentialAnimation on color {
+            running: clock.isShort & clock.minutes == 0
+            ColorAnimation {
+                to: Theme.colFgFlash
+                duration: 100
+                easing.type: Easing.OutQuad
+            }
+            ColorAnimation {
+                to: Theme.colFg
+                duration: 300
+                easing.type: Easing.OutQuad
+            }
+        }
     }
 
     SystemClock {
@@ -28,22 +37,9 @@ Rectangle {
         precision: clockText.isShort ? SystemClock.Minutes : SystemClock.Seconds
     }
 
-    SequentialAnimation on color {
-        running: clock.minutes == 0
-        ColorAnimation {
-            to: Theme.colBgFlash
-            duration: 100
-            easing.type: Easing.OutQuad
-        }
-        ColorAnimation {
-            to: Theme.colBg
-            duration: 300
-            easing.type: Easing.OutQuad
-        }
-    }
-
     MouseArea {
-        anchors.fill: parent
+        anchors.fill: clockText
+        cursorShape: Qt.PointingHandCursor
         onClicked: clockText.isShort = !clockText.isShort
     }
 }

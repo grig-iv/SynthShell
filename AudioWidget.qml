@@ -4,13 +4,10 @@ import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
 
-Rectangle {
+Item {
     id: root
 
-    color: Theme.colBg
-    implicitWidth: text.implicitWidth + Theme.modulePaddingX + 4
-    anchors.verticalCenter: parent.verticalCenter
-    radius: 4
+    implicitWidth: text.implicitWidth
 
     readonly property PwNode node: Pipewire.defaultAudioSink
     PwObjectTracker {
@@ -24,11 +21,26 @@ Rectangle {
         font.family: Theme.fontFamily
         font.pixelSize: Theme.fontSize - 1
         color: Theme.colFg
+
+        SequentialAnimation on color {
+            id: flashAnim
+            ColorAnimation {
+                to: Theme.colFgFlash
+                duration: 100
+                easing.type: Easing.OutQuad
+            }
+            ColorAnimation {
+                to: Theme.colFg
+                duration: 300
+                easing.type: Easing.OutQuad
+            }
+        }
     }
 
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
+        cursorShape: Qt.PointingHandCursor
         onClicked: mouse => {
             if (mouse.button === Qt.LeftButton) {
                 audioSinkCycle.running = true;
@@ -55,20 +67,6 @@ Rectangle {
         }
         function onMutedChanged() {
             flashAnim.restart();
-        }
-    }
-
-    SequentialAnimation on color {
-        id: flashAnim
-        ColorAnimation {
-            to: Theme.colBgFlash
-            duration: 100
-            easing.type: Easing.OutQuad
-        }
-        ColorAnimation {
-            to: Theme.colBg
-            duration: 300
-            easing.type: Easing.OutQuad
         }
     }
 

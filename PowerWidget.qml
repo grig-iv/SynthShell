@@ -4,10 +4,8 @@ import Quickshell.Io
 
 Rectangle {
     id: powerRect
-    color: mouseArea.containsMouse ? Theme.colDangerBg : Theme.colBg
+    color: mouseArea.containsMouse ? Theme.colBgDanger : Theme.colBg
     implicitWidth: implicitHeight
-    anchors.verticalCenter: parent.verticalCenter
-    anchors.right: parent.right
     radius: 4
 
     Behavior on color {

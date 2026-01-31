@@ -5,72 +5,60 @@ import QtQuick.Layouts
 
 ShellRoot {
     PanelWindow {
+        id: root
+
         anchors.top: true
         anchors.left: true
         anchors.right: true
+        implicitHeight: 26
 
-        color: "transparent"
-        implicitHeight: 4
+        color: Theme.colBg
+
+        RowLayout {
+            id: rootLayout
+            anchors.fill: parent
+
+            TrayWidget {
+                implicitHeight: parent.height - 6
+                Layout.leftMargin: 6
+                Layout.alignment: Qt.AlignVCenter
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            KeyboardWidget {
+                height: parent.height
+                Layout.rightMargin: 12
+            }
+
+            AudioWidget {
+                id: audioWidget
+                implicitHeight: parent.height
+            }
+
+            PowerWidget {
+                id: powerWidget
+                implicitHeight: parent.height
+            }
+        }
+
+        ClockWidget {
+            implicitHeight: parent.height
+            anchors.centerIn: parent
+        }
 
         MouseArea {
-            anchors.fill: parent
+            anchors.top: parent.top
+            implicitWidth: parent.width
+            implicitHeight: 4
             onClicked: niriGoTop.running = true
         }
 
         Process {
             id: niriGoTop
             command: ["niri", "msg", "action", "focus-workspace-up"]
-        }
-    }
-
-    PanelWindow {
-        id: root
-
-        anchors.top: true
-        anchors.left: true
-        anchors.right: true
-        margins.left: 20
-        margins.right: 20
-        implicitHeight: 26
-        color: "transparent"
-
-        RowLayout {
-            id: rootLayout
-
-            anchors.fill: parent
-
-            Item {
-                Layout.fillWidth: true
-                TrayWidget {
-                    implicitHeight: root.height
-                }
-            }
-
-            ClockWidget {
-                implicitHeight: root.height
-            }
-
-            Item {
-                Layout.fillWidth: true
-
-                KeyboardWidget {
-                    implicitHeight: root.height
-                    anchors.right: audioWidget.left
-                    anchors.rightMargin: 6
-                }
-
-                AudioWidget {
-                    id: audioWidget
-                    implicitHeight: root.height
-                    anchors.right: powerWidget.left
-                    anchors.rightMargin: 6
-                }
-
-                PowerWidget {
-                    id: powerWidget
-                    implicitHeight: root.height
-                }
-            }
         }
     }
 
