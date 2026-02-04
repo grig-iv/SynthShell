@@ -2,6 +2,8 @@ import Quickshell
 import QtQuick
 
 Item {
+    required property PanelWindow rootWindow
+
     Text {
         id: clockText
 
@@ -40,6 +42,13 @@ Item {
     MouseArea {
         anchors.fill: clockText
         cursorShape: Qt.PointingHandCursor
-        onClicked: clockText.isShort = !clockText.isShort
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onClicked: mouse => {
+            if (mouse.button === Qt.LeftButton) {
+                PopupService.clockPopup.open();
+            } else if (mouse.button === Qt.RightButton) {
+                clockText.isShort = !clockText.isShort;
+            }
+        }
     }
 }

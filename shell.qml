@@ -47,13 +47,14 @@ ShellRoot {
         ClockWidget {
             implicitHeight: parent.height
             anchors.centerIn: parent
+            rootWindow: root
         }
 
         MouseArea {
             anchors.top: parent.top
             implicitWidth: parent.width
             implicitHeight: 4
-            onClicked: niriGoTop.running = true
+            onClicked: modal.open()
         }
 
         Process {
@@ -78,6 +79,13 @@ ShellRoot {
         Process {
             id: niriGoDown
             command: ["niri", "msg", "action", "focus-workspace-down"]
+        }
+    }
+
+    ClockPopup {
+        id: clockPopup
+        Component.onCompleted: {
+            PopupService.clockPopup = clockPopup;
         }
     }
 }
